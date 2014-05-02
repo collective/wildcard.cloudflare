@@ -7,7 +7,7 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="wildcard.cloudflare"
+      title="Cloudflare Cache Purging"
       directory="profiles/default"
       description="Installs the wildcard.cloudflare package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
