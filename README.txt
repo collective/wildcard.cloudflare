@@ -1,7 +1,9 @@
 Introduction
 ============
 
-This is a very simple package to integrate cloudflare with plone.app.caching.
+This is a very simple package to integrate cloudflare cache purgine
+with plone.app.caching.
+
 
 Usage
 -----
@@ -12,3 +14,4 @@ Usage
 - Make sure to also configure which content types to enable puring on and
   make sure to check if you are using virtual host urls
 - Go to the "Cloudflare" control panel and fill in settings
+- Make test purge requests
