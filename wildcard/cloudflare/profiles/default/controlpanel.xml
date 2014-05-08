@@ -6,7 +6,7 @@
     purge="False">
 
     <configlet
-        title="Cloudflare"
+        title="CloudFlare"
         action_id="cloudflare_settings"
         appId="wildcard.cloudflare"
         category="Products"
