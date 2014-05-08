@@ -1,7 +1,7 @@
 Introduction
 ============
 
-This is a very simple package to integrate cloudflare cache purgine
+This is a very simple package to integrate cloudflare cache purging
 with plone.app.caching.
 
 
