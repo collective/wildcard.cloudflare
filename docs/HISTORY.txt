@@ -4,7 +4,8 @@ Changelog
 1.0a2 (unreleased)
 ------------------
 
-- nothing yet
+- fix not being able to use http, https only schemes
+
 
 1.0a2 (2014-05-07)
 ------------------

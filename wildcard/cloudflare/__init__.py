@@ -29,9 +29,9 @@ def getUrlsToPurge(path, key=None, email='', domains=(), scheme=BOTH):
     if scheme == BOTH:
         schemes = ('http', 'https')
     elif scheme == HTTP:
-        scheme = ('http',)
+        schemes = ('http',)
     elif scheme == HTTPS:
-        scheme = ('https',)
+        schemes = ('https',)
 
     urls = []
     params = {
