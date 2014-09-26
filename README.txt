@@ -1,8 +1,15 @@
 Introduction
 ============
 
-This is a very simple package to integrate cloudflare cache purging
-with plone.app.caching.
+.. image:: https://www.wildcardcorp.com/logo.png
+   :height: 50
+   :width: 382
+   :alt: Original work by wildcardcorp.com
+   :align: right
+
+
+This is a very simple package to integrate the Content Delivery Network (CDN) CloudFlare into the ability to do cache purging
+with plone.app.caching. 
 
 
 Usage
@@ -15,3 +22,6 @@ Usage
   make sure to check if you are using virtual host urls
 - Go to the "CloudFlare" control panel and fill in settings
 - Make test purge requests
+
+
+Tested with Plone 4.3.x
