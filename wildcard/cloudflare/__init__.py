@@ -43,7 +43,7 @@ def getUrlsToPurge(path, key=None, email='', domains=(), scheme=BOTH):
         for domain in domains:
             params.update({
                 'z': domain,
-                'url': '%s://%s/%s' % (scheme, domain, path)
+                'url': '%s://%s/%s' % (scheme, domain, path.lstrip('/'))
             })
             urls.append('%s?%s' % (cloudflare_endpoint, urlencode(params)))
     return urls
