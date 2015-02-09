@@ -3,10 +3,9 @@ from Products.Five import BrowserView
 from plone.app.registry.browser import controlpanel
 from wildcard.cloudflare.interfaces import ICloudflareSettings
 from zope.component import getMultiAdapter
-from zExceptions import Unauthorized
 from zope.component import queryUtility
 from plone.registry.interfaces import IRegistry
-from wildcard.cloudflare import getUrlsToPurge
+from wildcard.cloudflare import getUrlsToPurge, queuePurge
 from plone.cachepurging.interfaces import IPurger
 
 
@@ -21,6 +20,12 @@ class CloudflareSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
     index = ViewPageTemplateFile('controlpanel_layout.pt')
 
     form = CloudflareSettingsEditForm
+
+
+class FakeEvent(object):
+
+    def __init__(self, object):
+        self.object = object
 
 
 class Purge(BrowserView):
@@ -46,11 +51,17 @@ class Purge(BrowserView):
     def __call__(self):
         authenticator = getMultiAdapter((self.context, self.request),
                                         name=u"authenticator")
-        if not authenticator.verify():
-            raise Unauthorized
-        self.paths = self.request.get('paths', '').splitlines()
-        if self.paths:
-            self.purged = self.purge(self.paths)
-        else:
-            self.purged = []
+        if authenticator.verify():
+            self.paths = self.request.get('paths', '').splitlines()
+            if self.paths:
+                self.purged = self.purge(self.paths)
+            else:
+                self.purged = []
         return self.index()
+
+
+class PurgePage(BrowserView):
+
+    def __call__(self):
+        queuePurge(FakeEvent(self.context))
+        self.request.response.redirect(self.context.absolute_url() + '/view')

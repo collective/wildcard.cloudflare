@@ -29,5 +29,12 @@
       permission="cmf.ManagePortal"
       template="purge.pt"
   />
+  <browser:page
+      name="invalidate-cloudflare"
+      for="*"
+      class=".browser.PurgePage"
+      permission="cmf.ModifyPortalContent"
+      template="purge.pt"
+  />
 
 </configure>
