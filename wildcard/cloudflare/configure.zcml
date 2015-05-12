@@ -36,5 +36,13 @@
       permission="cmf.ModifyPortalContent"
       template="purge.pt"
   />
+  <browser:page
+      name="cloudflare-list-zones"
+      for="*"
+      class=".browser.ListZones"
+      permission="cmf.ManagePortal"
+  />
+
+  <include file="upgrades.zcml" />
 
 </configure>

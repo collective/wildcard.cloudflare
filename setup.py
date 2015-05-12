@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.0b2'
+version = '2.0b1'
 
 setup(name='wildcard.cloudflare',
       version=version,
@@ -26,7 +26,8 @@ setup(name='wildcard.cloudflare',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'plone.app.caching'
+          'plone.app.caching',
+          'requests'
       ],
       extras_require={
           'test': ['plone.app.testing']

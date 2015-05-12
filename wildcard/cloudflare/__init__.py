@@ -1,11 +1,8 @@
-from urllib import urlencode
-
 from zope.component import adapter, queryUtility
 from zope.annotation.interfaces import IAnnotations
 
 from plone.registry.interfaces import IRegistry
 
-from plone.cachepurging.interfaces import IPurger
 from plone.cachepurging.hooks import KEY
 from plone.cachepurging.interfaces import ICachePurgingSettings
 from plone.cachepurging.utils import getPathsToPurge
@@ -19,13 +16,10 @@ from wildcard.cloudflare.interfaces import (
     ICloudflareSettings,
     HTTP, HTTPS, BOTH)
 
+from wildcard.cloudflare.purger import CloudflarePurger
 
-cloudflare_endpoint = 'https://www.cloudflare.com/api_json.html'
 
-
-def getUrlsToPurge(path, key=None, email='', domains=(), scheme=BOTH):
-    if key is None:
-        return []
+def getUrlsToPurge(path, domains=(), scheme=BOTH):
     if scheme == BOTH:
         schemes = ('http', 'https')
     elif scheme == HTTP:
@@ -34,18 +28,9 @@ def getUrlsToPurge(path, key=None, email='', domains=(), scheme=BOTH):
         schemes = ('https',)
 
     urls = []
-    params = {
-        'a': 'zone_file_purge',
-        'tkn': key,
-        'email': email
-    }
     for scheme in schemes:
         for domain in domains:
-            params.update({
-                'z': domain,
-                'url': '%s://%s/%s' % (scheme, domain, path.lstrip('/'))
-            })
-            urls.append('%s?%s' % (cloudflare_endpoint, urlencode(params)))
+            urls.append('%s://%s/%s' % (scheme, domain, path.lstrip('/')))
     return urls
 
 
@@ -106,19 +91,18 @@ def purge(event):
         return
 
     settings = registry.forInterface(ICloudflareSettings, check=False)
-    if not settings.apiKey:
-        return
-
-    purger = queryUtility(IPurger)
-    if purger is None:
+    if not settings.apiKey or not settings.zone_id:
         return
 
     key = settings.apiKey
     domains = settings.domains
     scheme = settings.scheme
     email = settings.email
+    zone_id = settings.zone_id
 
-    for path in paths:
-        for url in getUrlsToPurge(path, key=key, email=email, domains=domains,
-                                  scheme=scheme):
-            purger.purgeAsync(url, 'GET')
+    if paths:
+        urls = []
+        for path in paths:
+            urls.extend(getUrlsToPurge(path, domains=domains, scheme=scheme))
+
+        CloudflarePurger.purgeAsync(urls, zone_id, key, email)

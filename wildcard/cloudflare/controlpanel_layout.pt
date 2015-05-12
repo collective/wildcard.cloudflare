@@ -30,6 +30,10 @@
         <span tal:replace="structure view/contents" />
     </div>
 
+    <a id="list-zones" href="#">List Cloudflare Zone IDs</a>
+    <ul id="zone-list">
+    </ul>
+
     <h3>Manual Purge</h3>
     <p class="discreet">Make sure to save settings first</p>
     <form method="POST"
@@ -39,6 +43,39 @@
       <textarea name="paths" rows="5"></textarea>
       <input type="submit" name="purge-button" value="Purge Paths" />
     </form>
+
+    <script>
+$(document).ready(function(){
+  $('#list-zones').click(function(e){
+    e.preventDefault();
+    var email = $('#form-widgets-email').val();
+    var key = $('#form-widgets-apiKey').val();
+    if(!email || !key){
+      alert('Must enter both an api key and email address');
+      return;
+    }
+    e.preventDefault();
+    $.ajax({
+      method: 'POST',
+      dataType: 'json',
+      url: '@@cloudflare-list-zones',
+      data: {
+        email: email,
+        key: key
+      },
+      success: function(result){
+        var $container = $('#zone-list');
+        $container.empty();
+        var items = result.result;
+        for(var i=0; i<items.length; i++){
+          var item = items[i];
+          $container.append('<li>' + item.name + ' - ' + item.id + '</li>');
+        }
+      }
+    })
+  });
+});
+    </script>
 </div>
 </body>
 </html>

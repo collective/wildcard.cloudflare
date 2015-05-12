@@ -34,6 +34,9 @@
         </tal:path>
       </ul>
       <h3>Purge urls</h3>
+      <p tal:condition="not: view/success" class="discreet">
+        There was an error submitted the purge request
+      </p>
       <ul>
         <tal:path tal:repeat="url view/purged">
           <li tal:content="url" />

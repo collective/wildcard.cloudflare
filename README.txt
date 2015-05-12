@@ -11,6 +11,12 @@ Introduction
 This is a very simple package to integrate the Content Delivery Network (CDN) CloudFlare into the ability to do cache purging
 with plone.app.caching. 
 
+Warning
+-------
+
+Version 2.x is for the new cloudflare API: https://api.cloudflare.com/#zone-purge-all-files
+
+Version 1.x is for the old api. Please use what version your cloudflare account is using
 
 Usage
 -----

@@ -23,6 +23,10 @@ class ICloudflareSettings(Interface):
         required=False
     )
 
+    zone_id = schema.TextLine(
+        title=u'Zone ID',
+        required=False)
+
     domains = schema.Tuple(
         title=u'Domains',
         description=u'List of domains to purge for. Example: www.foobar.com',
