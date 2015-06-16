@@ -31,6 +31,8 @@ class CloudflarePurgerFactory(object):
     implements(IPurger)
 
     def __init__(self, backlog=200):
+        self.worker = None
+        self.queue = None
         self.backlog = backlog
         self.queueLock = threading.Lock()
 
