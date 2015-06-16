@@ -64,7 +64,7 @@ class Purge(BrowserView):
 class PurgePage(BrowserView):
 
     def __call__(self):
-        queuePurge(FakeEvent(self.context))
+        queuePurge(FakeEvent(self.context), force=True)
         self.request.response.redirect(self.context.absolute_url() + '/view')
 
 

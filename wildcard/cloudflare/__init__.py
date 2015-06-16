@@ -27,6 +27,12 @@ def getUrlsToPurge(path, domains=(), scheme=BOTH):
     elif scheme == HTTPS:
         schemes = ('https',)
 
+    # remove virtual hosting stuff
+    if '/_vh_' in path:
+        path = '/' + path.split('/_vh_')[-1].split('/', 1)[-1]
+    if 'VirtualHostRoot' in path:
+        path = path.split('VirtualHostRoot')[-1]
+
     urls = []
     for scheme in schemes:
         for domain in domains:
@@ -35,7 +41,7 @@ def getUrlsToPurge(path, domains=(), scheme=BOTH):
 
 
 @adapter(IPurgeEvent)
-def queuePurge(event):
+def queuePurge(event, force=False):
     """ so this is a little wonky here...
     We need to also purge here because plone.cachepurging will only update
     paths if caching proxies are defined. The deal here is that with
@@ -59,7 +65,7 @@ def queuePurge(event):
 
     # so we're enabled, BUT we also need to NOT have proxies defined
     # in order to register here
-    if bool(settings.cachingProxies):
+    if bool(settings.cachingProxies) and not force:
         return
 
     paths = annotations.setdefault(KEY, set())

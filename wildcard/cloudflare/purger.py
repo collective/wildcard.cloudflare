@@ -31,13 +31,13 @@ class CloudflarePurgerFactory(object):
     implements(IPurger)
 
     def __init__(self, backlog=200):
-        self.queue = Queue.Queue(backlog)
-        self.worker = Worker(self.queue, self)
         self.backlog = backlog
         self.queueLock = threading.Lock()
 
     def purgeAsync(self, urls, zone_id, api_key, email):
-        if not self.worker.isAlive():
+        if self.worker is None:
+            self.queue = Queue.Queue(self.backlog)
+            self.worker = Worker(self.queue, self)
             self.worker.start()
         try:
             self.queue.put((urls, zone_id, api_key, email), block=False)
