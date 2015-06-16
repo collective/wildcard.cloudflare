@@ -37,6 +37,8 @@ class CloudflarePurgerFactory(object):
         self.queueLock = threading.Lock()
 
     def purgeAsync(self, urls, zone_id, api_key, email):
+        if not self.worker.isAlive():
+            self.worker.start()
         try:
             self.queue.put((urls, zone_id, api_key, email), block=False)
             logger.debug('Queued %s' % ','.join(urls))
