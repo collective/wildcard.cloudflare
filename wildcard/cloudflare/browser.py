@@ -72,7 +72,7 @@ class ListZones(BrowserView):
     def __call__(self):
         req = self.request
         return requests.get(
-            'https://api.cloudflare.com/client/v4/zones',
+            'https://api.cloudflare.com/client/v4/zones?per_page=50',
             headers={
                 'X-Auth-Email': req.get('email'),
                 "X-Auth-Key": req.get('key')
