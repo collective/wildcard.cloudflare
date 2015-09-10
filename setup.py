@@ -7,7 +7,7 @@ setup(name='wildcard.cloudflare',
       version=version,
       description="",
       long_description="%s\n%s" % (
-          open("README.txt").read(),
+          open("README.rst").read(),
           open(os.path.join("docs", "HISTORY.txt")).read()),
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers
