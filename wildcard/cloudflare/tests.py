@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 import unittest
 
-#from zope.testing import doctestunit
-#from zope.component import testing
+# from zope.testing import doctestunit
+# from zope.component import testing
 from Testing import ZopeTestCase as ztc
 
 from Products.Five import fiveconfigure
@@ -31,25 +32,25 @@ def test_suite():
     return unittest.TestSuite([
 
         # Unit tests
-        #doctestunit.DocFileSuite(
+        # doctestunit.DocFileSuite(
         #    'README.txt', package='wildcard.cloudflare',
         #    setUp=testing.setUp, tearDown=testing.tearDown),
 
-        #doctestunit.DocTestSuite(
+        # doctestunit.DocTestSuite(
         #    module='wildcard.cloudflare.mymodule',
         #    setUp=testing.setUp, tearDown=testing.tearDown),
 
 
         # Integration tests that use PloneTestCase
-        #ztc.ZopeDocFileSuite(
+        # ztc.ZopeDocFileSuite(
         #    'README.txt', package='wildcard.cloudflare',
         #    test_class=TestCase),
 
-        #ztc.FunctionalDocFileSuite(
+        # ztc.FunctionalDocFileSuite(
         #    'browser.txt', package='wildcard.cloudflare',
         #    test_class=TestCase),
 
-        ])
+    ])
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')
