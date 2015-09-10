@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 import zope.component.testing
 
@@ -74,7 +75,7 @@ class TestPurgeHandler(unittest.TestCase):
 
         notify(PubSuccess(request))
 
-        self.assertEquals([], self.purger.purged)
+        self.assertEqual([], self.purger.purged)
 
     def test_no_registry(self):
         request = FauxRequest()
@@ -83,7 +84,7 @@ class TestPurgeHandler(unittest.TestCase):
         IAnnotations(request)['plone.cachepurging.urls'] = set(['/foo',
                                                                 '/bar'])
         notify(PubSuccess(request))
-        self.assertEquals([], self.purger.purged)
+        self.assertEqual([], self.purger.purged)
 
     def test_caching_disabled(self):
         request = FauxRequest()
@@ -105,7 +106,7 @@ class TestPurgeHandler(unittest.TestCase):
         settings.domains = (u'www.foobar.com',)
         notify(PubSuccess(request))
 
-        self.assertEquals([], self.purger.purged)
+        self.assertEqual([], self.purger.purged)
 
     def test_purge(self):
         request = FauxRequest()
@@ -129,8 +130,8 @@ class TestPurgeHandler(unittest.TestCase):
 
         notify(PubSuccess(request))
 
-        self.assertEquals(len(self.purger.purged), 4)
-        self.assertEquals(
+        self.assertEqual(len(self.purger.purged), 4)
+        self.assertEqual(
             self.purger.purged[0],
             ('https://www.cloudflare.com/api_json.html?a=zone_file_purge&'
              'tkn=foobar&url=http%2Fwww.foobar.com%2F%2Ffoo&'

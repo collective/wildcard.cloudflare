@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """The following is borrowed heavily from Products.CMFSquidTool. That code
 is ZPL licensed.
 
@@ -114,7 +115,7 @@ class Worker(threading.Thread):
                     # XXX check valid response
                 except Exception:
                     logger.exception('Failed to purge %s', ','.join(urls))
-        except:
+        except:  # FIXME: blind except
             logger.exception('Exception in worker thread '
                              'for (%s, %s)' % (self.host, self.scheme))
         logger.debug("%s terminating", self)

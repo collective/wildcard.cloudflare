@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five import BrowserView
 from plone.app.registry.browser import controlpanel
