@@ -14,22 +14,28 @@ Asynchronous purging works as follows:
 
 import atexit
 import logging
-import Queue
 import threading
 import requests
 import json
 
 from App.config import getConfiguration
-from zope.interface import implements
+from zope.interface import implementer
 
 from plone.cachepurging.interfaces import IPurger
+
+try:
+    from queue import Queue
+    from queue import Full
+except:
+    # Python 2
+    from Queue import Queue
+    from Queue import Full
 
 logger = logging.getLogger('wildcard.cloudflare')
 
 
+@implementer(IPurger)
 class CloudflarePurgerFactory(object):
-
-    implements(IPurger)
 
     def __init__(self, backlog=200):
         self.worker = None
@@ -39,13 +45,13 @@ class CloudflarePurgerFactory(object):
 
     def purgeAsync(self, urls, zone_id, api_key, email):
         if self.worker is None:
-            self.queue = Queue.Queue(self.backlog)
+            self.queue = Queue(self.backlog)
             self.worker = Worker(self.queue, self)
             self.worker.start()
         try:
             self.queue.put((urls, zone_id, api_key, email), block=False)
             logger.debug('Queued %s' % ','.join(urls))
-        except Queue.Full:
+        except Full:
             # Make a loud noise. Ideally the queue size would be
             # user-configurable - but the more likely case is that the purge
             # host is down.
@@ -71,7 +77,7 @@ class CloudflarePurgerFactory(object):
         self.worker.stopping = True
         try:
             self.queue.put(None, block=False)
-        except Queue.Full:
+        except Full:
             # no problem - self.stopping should be seen.
             pass
         ok = True
